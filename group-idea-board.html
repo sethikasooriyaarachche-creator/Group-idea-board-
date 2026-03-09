@@ -27,7 +27,7 @@
     .idea-form {
       max-width: 700px;
       margin: auto;
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.9);
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
@@ -44,8 +44,8 @@
     select, textarea, button {
       width: 100%;
       margin: 12px 0;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 12px;
+      border-radius: 10px;
       border: 1px solid #ddd;
       font-family: 'Nunito', sans-serif;
       font-size: 1rem;
@@ -71,55 +71,69 @@
     }
 
     button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .ideas-section {
       max-width: 700px;
       margin: 40px auto;
+      display: none; /* hidden until first idea */
     }
 
     .idea-card {
       background: #fff;
       border-left: 6px solid #74ebd5;
-      padding: 20px;
+      padding: 18px;
       margin-bottom: 20px;
-      border-radius: 15px;
+      border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.1);
       animation: slideUp 0.6s ease;
       color: #333;
-      position: relative;
     }
 
     .idea-card strong {
       color: #9face6;
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
 
     /* Pending ideas style */
     .pending-card {
-      background: #fff8e1;
+      background: #fffdf5;
       border-left: 6px solid #fbc02d;
     }
 
-    .done-btn {
-      background: #4caf50;
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
+    .card-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .approve-btn, .delete-btn {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 0.9rem;
-      position: absolute;
-      top: 15px;
-      right: 15px;
+      font-size: 0.85rem;
+      border: none;
       transition: background 0.3s ease;
     }
 
-    .done-btn:hover {
+    .approve-btn {
+      background: #4caf50;
+      color: #fff;
+    }
+    .approve-btn:hover {
       background: #388e3c;
+    }
+
+    .delete-btn {
+      background: #e53935;
+      color: #fff;
+    }
+    .delete-btn:hover {
+      background: #b71c1c;
     }
 
     @keyframes fadeIn {
@@ -139,9 +153,15 @@
   <div class="idea-form">
     <label for="name">Select Your Name:</label>
     <select id="name">
-      <option value="Imadh Nisar">Imadh Nisar</option>
-      <option value="Sarah Lee">Sarah Lee</option>
-      <option value="David Kumar">David Kumar</option>
+     <option value="Imadh Nisar">Imadh Nisar</option>
+      <option value="Sarah Lee">Kalshi Wijesinghe</option>
+      <option value="David Kumar">Chiraag Masakorala</option>
+       <option value="Imadh Nisar">Kaushalya Athapaththu</option>
+      <option value="Sarah Lee">Thamasha Lionel</option>
+      <option value="David Kumar">Niroshan Withanage</option>
+       <option value="Imadh Nisar">Anuk Indeepa</option>
+      <option value="Sarah Lee">Sethika sooriyaarachche</option>
+      <option value="David Kumar">Sihath Lakjitha</option>
     </select>
 
     <label for="idea">Type Your Idea:</label>
@@ -150,7 +170,7 @@
     <button onclick="addIdea()">Submit Idea</button>
   </div>
 
-  <div class="ideas-section">
+  <div class="ideas-section" id="ideasSection">
     <h2 style="color:#fff; text-align:center;">✅ Approved Ideas</h2>
     <div id="ideasList"></div>
 
@@ -164,27 +184,45 @@
       const idea = document.getElementById('idea').value.trim();
 
       if (idea) {
+        // Show ideas section after first submission
+        document.getElementById('ideasSection').style.display = 'block';
+
         const ideaCard = document.createElement('div');
         ideaCard.className = 'idea-card pending-card';
         ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${idea}</p>`;
 
-        // Add "Done" button
-        const doneBtn = document.createElement('button');
-        doneBtn.className = 'done-btn';
-        doneBtn.textContent = 'Done';
-        doneBtn.onclick = function() {
+        // Buttons container
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'card-buttons';
+
+        // Approve button
+        const approveBtn = document.createElement('button');
+        approveBtn.className = 'approve-btn';
+        approveBtn.textContent = 'Approve';
+        approveBtn.onclick = function() {
           moveToApproved(ideaCard);
         };
 
-        ideaCard.appendChild(doneBtn);
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = function() {
+          ideaCard.remove();
+        };
+
+        btnContainer.appendChild(approveBtn);
+        btnContainer.appendChild(deleteBtn);
+        ideaCard.appendChild(btnContainer);
+
         document.getElementById('pendingList').appendChild(ideaCard);
         document.getElementById('idea').value = ''; // clear box
       }
     }
 
     function moveToApproved(card) {
-      // Remove "Done" button
-      card.querySelector('.done-btn').remove();
+      // Remove buttons
+      card.querySelector('.card-buttons').remove();
       card.classList.remove('pending-card');
       card.style.borderLeft = '6px solid #74ebd5';
       document.getElementById('ideasList').appendChild(card);

@@ -104,22 +104,36 @@
       border-left: 6px solid #fbc02d;
     }
 
-    .done-btn {
-      background: #4caf50;
-      color: #fff;
-      border: none;
+    .card-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .approve-btn, .delete-btn {
+      flex: 1;
       padding: 8px 14px;
       border-radius: 8px;
       cursor: pointer;
       font-size: 0.9rem;
-      position: absolute;
-      top: 15px;
-      right: 15px;
+      border: none;
       transition: background 0.3s ease;
     }
 
-    .done-btn:hover {
+    .approve-btn {
+      background: #4caf50;
+      color: #fff;
+    }
+    .approve-btn:hover {
       background: #388e3c;
+    }
+
+    .delete-btn {
+      background: #e53935;
+      color: #fff;
+    }
+    .delete-btn:hover {
+      background: #b71c1c;
     }
 
     @keyframes fadeIn {
@@ -168,23 +182,38 @@
         ideaCard.className = 'idea-card pending-card';
         ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${idea}</p>`;
 
-        // Add "Done" button
-        const doneBtn = document.createElement('button');
-        doneBtn.className = 'done-btn';
-        doneBtn.textContent = 'Done';
-        doneBtn.onclick = function() {
+        // Buttons container
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'card-buttons';
+
+        // Approve button
+        const approveBtn = document.createElement('button');
+        approveBtn.className = 'approve-btn';
+        approveBtn.textContent = 'Approve';
+        approveBtn.onclick = function() {
           moveToApproved(ideaCard);
         };
 
-        ideaCard.appendChild(doneBtn);
+        // Delete button
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = function() {
+          ideaCard.remove();
+        };
+
+        btnContainer.appendChild(approveBtn);
+        btnContainer.appendChild(deleteBtn);
+        ideaCard.appendChild(btnContainer);
+
         document.getElementById('pendingList').appendChild(ideaCard);
         document.getElementById('idea').value = ''; // clear box
       }
     }
 
     function moveToApproved(card) {
-      // Remove "Done" button
-      card.querySelector('.done-btn').remove();
+      // Remove buttons
+      card.querySelector('.card-buttons').remove();
       card.classList.remove('pending-card');
       card.style.borderLeft = '6px solid #74ebd5';
       document.getElementById('ideasList').appendChild(card);

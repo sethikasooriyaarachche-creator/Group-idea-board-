@@ -104,29 +104,27 @@
       border-left: 6px solid #fbc02d;
     }
 
+    /* Done (shaded) style */
+    .done-card {
+      background: #e0e0e0 !important;
+      color: #777 !important;
+    }
+    .done-card p, .done-card strong {
+      text-decoration: line-through;
+    }
+
     .card-buttons {
       margin-top: 10px;
       display: flex;
-<<<<<<< HEAD
       gap: 8px;
-=======
-      gap: 10px;
->>>>>>> 658f3aa9826fd6ff7b84033c63add66e20cf6d62
     }
 
-    .approve-btn, .delete-btn {
+    .approve-btn, .delete-btn, .done-btn {
       flex: 1;
-<<<<<<< HEAD
       padding: 6px 10px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 0.85rem;
-=======
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 0.9rem;
->>>>>>> 658f3aa9826fd6ff7b84033c63add66e20cf6d62
       border: none;
       transition: background 0.3s ease;
     }
@@ -147,6 +145,25 @@
       background: #b71c1c;
     }
 
+    .done-btn {
+      background: #2196f3;
+      color: #fff;
+    }
+    .done-btn:hover {
+      background: #1565c0;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: #333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
     @keyframes fadeIn {
       from {opacity: 0; transform: scale(0.95);}
       to {opacity: 1; transform: scale(1);}
@@ -164,15 +181,15 @@
   <div class="idea-form">
     <label for="name">Select Your Name:</label>
     <select id="name">
-     <option value="Imadh Nisar">Imadh Nisar</option>
-      <option value="Sarah Lee">Kalshi Wijesinghe</option>
-      <option value="David Kumar">Chiraag Masakorala</option>
-       <option value="Imadh Nisar">Kaushalya Athapaththu</option>
-      <option value="Sarah Lee">Thamasha Lionel</option>
-      <option value="David Kumar">Niroshan Withanage</option>
-       <option value="Imadh Nisar">Anuk Indeepa</option>
-      <option value="Sarah Lee">Sethika sooriyaarachche</option>
-      <option value="David Kumar">Sihath Lakjitha</option>
+      <option value="Imadh Nisar">Imadh Nisar</option>
+      <option value="Kalshi Wijesinghe">Kalshi Wijesinghe</option>
+      <option value="Chiraag Masakorala">Chiraag Masakorala</option>
+      <option value="Kaushalya Athapaththu">Kaushalya Athapaththu</option>
+      <option value="Thamasha Lionel">Thamasha Lionel</option>
+      <option value="Niroshan Withanage">Niroshan Withanage</option>
+      <option value="Anuk Indeepa">Anuk Indeepa</option>
+      <option value="Sethika Sooriyaarachche">Sethika Sooriyaarachche</option>
+      <option value="Sihath Lakjitha">Sihath Lakjitha</option>
     </select>
 
     <label for="idea">Type Your Idea:</label>
@@ -189,24 +206,25 @@
     <div id="pendingList"></div>
   </div>
 
+  <footer>
+    © 2026 Team Idea Board | Built with ❤️ for collaboration
+  </footer>
+
   <script>
     function addIdea() {
       const name = document.getElementById('name').value;
       const idea = document.getElementById('idea').value.trim();
 
       if (idea) {
-        // Show ideas section after first submission
         document.getElementById('ideasSection').style.display = 'block';
 
         const ideaCard = document.createElement('div');
         ideaCard.className = 'idea-card pending-card';
         ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${idea}</p>`;
 
-        // Buttons container
         const btnContainer = document.createElement('div');
         btnContainer.className = 'card-buttons';
 
-        // Approve button
         const approveBtn = document.createElement('button');
         approveBtn.className = 'approve-btn';
         approveBtn.textContent = 'Approve';
@@ -214,7 +232,6 @@
           moveToApproved(ideaCard);
         };
 
-        // Delete button
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
         deleteBtn.textContent = 'Delete';
@@ -227,17 +244,44 @@
         ideaCard.appendChild(btnContainer);
 
         document.getElementById('pendingList').appendChild(ideaCard);
-        document.getElementById('idea').value = ''; // clear box
+        document.getElementById('idea').value = '';
       }
     }
 
-    function moveToApproved(card) {
-      // Remove buttons
-      card.querySelector('.card-buttons').remove();
-      card.classList.remove('pending-card');
-      card.style.borderLeft = '6px solid #74ebd5';
-      document.getElementById('ideasList').appendChild(card);
-    }
-  </script>
+   function moveToApproved(card) {
+  // Remove old buttons (Approve/Delete)
+  card.querySelector('.card-buttons').remove();
+  card.classList.remove('pending-card');
+  card.style.borderLeft = '6px solid #74ebd5';
+
+  // Create new button container
+  const btnContainer = document.createElement('div');
+  btnContainer.className = 'card-buttons';
+
+  // Done button
+  const doneBtn = document.createElement('button');
+  doneBtn.className = 'done-btn';
+  doneBtn.textContent = 'Done';
+  doneBtn.onclick = function() {
+    card.classList.add('done-card'); // shade and mark as completed
+    doneBtn.remove(); // remove the button after marking done
+  };
+
+  // Delete button (still available in Approved section)
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.onclick = function() {
+    card.remove();
+  };
+
+  btnContainer.appendChild(doneBtn);
+  btnContainer.appendChild(deleteBtn);
+  card.appendChild(btnContainer);
+
+  // Move card to Approved Ideas section
+  document.getElementById('ideasList').appendChild(card);
+ }
+</script>
 </body>
 </html>

@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Team Idea Board</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f9f9f9, #e3f2fd);
+      margin: 0;
+      padding: 40px;
+    }
 
+    h1 {
+      text-align: center;
+      font-family: 'Pacifico', cursive;
+      color: #3f51b5;
+      margin-bottom: 30px;
+    }
+
+    .idea-form {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    select, textarea, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #3f51b5;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #283593;
+    }
+
+    .ideas-list {
+      max-width: 600px;
+      margin: 30px auto;
+    }
+
+    .idea-card {
+      background: #fff;
+      border-left: 6px solid #3f51b5;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .idea-card strong {
+      color: #3f51b5;
+      font-family: 'Pacifico', cursive;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <h1>💡 Team Idea Board 💡</h1>
+
+  <div class="idea-form">
+    <label for="name">Select Your Name:</label>
+    <select id="name">
+      <option value="Imadh Nisar">Imadh Nisar</option>
+      <option value="Sarah Lee">Sarah Lee</option>
+      <option value="David Kumar">David Kumar</option>
+    </select>
+
+    <label for="idea">Type Your Idea:</label>
+    <textarea id="idea" rows="4" placeholder="Share your brilliant idea..."></textarea>
+
+    <button onclick="addIdea()">Submit Idea</button>
+  </div>
+
+  <div class="ideas-list" id="ideasList"></div>
+
+  <script>
+    function addIdea() {
+      const name = document.getElementById('name').value;
+      const idea = document.getElementById('idea').value.trim();
+
+      if (idea) {
+        const ideaCard = document.createElement('div');
+        ideaCard.className = 'idea-card';
+        ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${idea}</p>`;
+        document.getElementById('ideasList').appendChild(ideaCard);
+
+        document.getElementById('idea').value = ''; // clear box
+      }
+    }
+  </script>
+</body>
+</html>

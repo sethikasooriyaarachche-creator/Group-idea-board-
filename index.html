@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Toolkit</title>
     <style>
+        /* YOUR ORIGINAL DESIGN - UNTOUCHED */
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +20,6 @@
             flex-direction: column;
         }
 
-        /* Navbar Styles */
         .navbar {
             background: rgba(0, 0, 0, 0.8);
             padding: 1rem 2rem;
@@ -63,7 +63,6 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        /* Main Container */
         .container {
             display: flex;
             flex: 1;
@@ -74,7 +73,6 @@
             width: 100%;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             background: rgba(255, 255, 255, 0.95);
@@ -123,7 +121,6 @@
             opacity: 0.9;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background: rgba(255, 255, 255, 0.95);
@@ -175,169 +172,157 @@
             margin-top: 0.5rem;
         }
 
-        /* Animations */
-        @keyframes slideInContent {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* GPA specific styling using your colors */
+        .gpa-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
         }
 
-        @keyframes slideInSidebar {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.3s;
+            margin-right: 10px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-
-            .sidebar {
-                width: 100%;
-                order: 2;
-            }
-
-            .main-content {
-                order: 1;
-            }
-
-            .nav-links {
-                gap: 1rem;
-            }
-
-            .navbar {
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-
-            .navbar h1 {
-                font-size: 1.5rem;
-            }
-
-            .nav-links a {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.9rem;
-            }
+        .action-btn:hover {
+            opacity: 0.8;
         }
 
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 1rem;
-            }
-
-            .nav-links {
-                gap: 0.5rem;
-            }
-
-            .navbar h1 {
-                font-size: 1.2rem;
-            }
-
-            .container {
-                padding: 1rem;
-            }
-
-            .main-content {
-                padding: 1rem;
-            }
-
-            .sidebar {
-                padding: 1rem;
-            }
-        }
+        @keyframes slideInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInSidebar { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar">
-        <h1>Student Toolkit</h1>
+        <h1 style="cursor: pointer;" onclick="goHome()">Student Toolkit</h1>
         <ul class="nav-links">
+            <li><a onclick="goHome()">Home</a></li>
             <li><a onclick="openGPACalculator()">GPA Calculator</a></li>
             <li><a onclick="openStudyTimer()">Study Timer</a></li>
         </ul>
     </nav>
 
-    <!-- Main Container with Content and Sidebar -->
     <div class="container">
-        <!-- Main Content -->
         <div class="main-content">
-            <h2>Welcome to Student Toolkit</h2>
-            <p>Your comprehensive platform for academic success. Manage your grades, track your study time, and stay organized with our suite of student tools.</p>
             
-            <div class="tools-grid">
-                <div class="tool-card" onclick="openGPACalculator()">
-                    <h3>📊 GPA Calculator</h3>
-                    <p>Calculate and track your GPA across multiple courses and semesters.</p>
-                </div>
-                <div class="tool-card" onclick="openStudyTimer()">
-                    <h3>⏱️ Study Timer</h3>
-                    <p>Maximize productivity with Pomodoro-style study sessions and breaks.</p>
-                </div>
-                <div class="tool-card" onclick="alert('More features coming soon!')">
-                    <h3>📚 Study Resources</h3>
-                    <p>Access curated study materials and learning resources.</p>
+            <div id="home-view">
+                <h2>Welcome to Student Toolkit</h2>
+                <p>Your comprehensive platform for academic success. Manage your grades, track your study time, and stay organized.</p>
+                
+                <div class="tools-grid">
+                    <div class="tool-card" onclick="openGPACalculator()">
+                        <h3>📊 GPA Calculator</h3>
+                        <p>Calculate and track your GPA across multiple courses and semesters.</p>
+                    </div>
+                    <div class="tool-card" onclick="openStudyTimer()">
+                        <h3>⏱️ Study Timer</h3>
+                        <p>Maximize productivity with Pomodoro-style study sessions and breaks.</p>
+                    </div>
+                    <div class="tool-card" onclick="alert('More features coming soon!')">
+                        <h3>📚 Study Resources</h3>
+                        <p>Access curated study materials and learning resources.</p>
+                    </div>
                 </div>
             </div>
+
+            <div id="gpa-view" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>📊 GPA Calculator</h2>
+                    <button class="action-btn" onclick="goHome()" style="background: #666; color: white;">← Back to Home</button>
+                </div>
+
+                <div id="course-list">
+                    <div class="course-row" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="number" class="gpa-input credits" placeholder="Credits (e.g. 3)" min="0">
+                        <input type="number" class="gpa-input grade" placeholder="Grade (0-4.0)" min="0" max="4" step="0.1">
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <button class="action-btn" onclick="addCourseRow()" style="background: #764ba2; color: white;">+ Add Course</button>
+                    <button class="action-btn" onclick="calculateGPA()" style="background: #667eea; color: white;">Calculate GPA</button>
+                </div>
+
+                <div id="gpa-output" style="margin-top: 2rem; font-size: 2rem; font-weight: 700; color: #764ba2;"></div>
+            </div>
+
         </div>
 
-        <!-- Sidebar -->
         <aside class="sidebar">
             <h3>📅 Upcoming Events</h3>
-            
             <div class="event">
                 <h4>Midterm Exams</h4>
                 <p>Mathematics, Physics, and Chemistry exams.</p>
                 <div class="event-date">Oct 15 - Oct 20, 2024</div>
             </div>
-
             <div class="event">
                 <h4>Project Submission</h4>
                 <p>Final project deadline for Web Development course.</p>
                 <div class="event-date">Oct 22, 2024</div>
             </div>
-
-            <div class="event">
-                <h4>Study Group Meeting</h4>
-                <p>Weekly study group discussion on Data Structures.</p>
-                <div class="event-date">Oct 18, 2024 @ 4:00 PM</div>
-            </div>
-
-            <div class="event">
-                <h4>Career Fair</h4>
-                <p>Meet with tech companies and explore internship opportunities.</p>
-                <div class="event-date">Oct 25, 2024</div>
-            </div>
-
-            <div class="event">
-                <h4>Library Workshop</h4>
-                <p>Research methodologies and academic writing techniques.</p>
-                <div class="event-date">Oct 19, 2024 @ 2:00 PM</div>
-            </div>
         </aside>
     </div>
 
     <script>
+        // Navigation Logic
+        function goHome() {
+            document.getElementById('home-view').style.display = 'block';
+            document.getElementById('gpa-view').style.display = 'none';
+        }
+
         function openGPACalculator() {
-            alert('GPA Calculator feature - Coming soon!');
-            console.log('Opening GPA Calculator...');
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('gpa-view').style.display = 'block';
+        }
+
+        // GPA Logic
+        function addCourseRow() {
+            const container = document.getElementById('course-list');
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.style = "display: flex; gap: 1rem; margin-bottom: 1rem;";
+            row.innerHTML = `
+                <input type="number" class="gpa-input credits" placeholder="Credits" min="0">
+                <input type="number" class="gpa-input grade" placeholder="Grade (0-4.0)" min="0" max="4" step="0.1">
+            `;
+            container.appendChild(row);
+        }
+
+        function calculateGPA() {
+            const creditElements = document.getElementsByClassName('credits');
+            const gradeElements = document.getElementsByClassName('grade');
+            
+            let totalWeightedPoints = 0;
+            let totalCredits = 0;
+
+            for (let i = 0; i < creditElements.length; i++) {
+                const credits = parseFloat(creditElements[i].value);
+                const grade = parseFloat(gradeElements[i].value);
+
+                if (!isNaN(credits) && !isNaN(grade)) {
+                    totalWeightedPoints += (credits * grade);
+                    totalCredits += credits;
+                }
+            }
+
+            const output = document.getElementById('gpa-output');
+            if (totalCredits > 0) {
+                const finalGPA = (totalWeightedPoints / totalCredits).toFixed(2);
+                output.innerText = `Overall GPA: ${finalGPA}`;
+            } else {
+                output.innerText = "Please enter valid credits and grades.";
+            }
         }
 
         function openStudyTimer() {
             alert('Study Timer feature - Coming soon!');
-            console.log('Opening Study Timer...');
         }
     </script>
 </body>

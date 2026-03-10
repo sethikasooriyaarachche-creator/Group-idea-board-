@@ -195,6 +195,16 @@
             opacity: 0.8;
         }
 
+        /* TIMER SPECIFIC STYLING */
+        #timer-display {
+            font-size: 5rem;
+            font-weight: 800;
+            color: #764ba2;
+            text-align: center;
+            margin: 2rem 0;
+            font-variant-numeric: tabular-nums;
+        }
+
         @keyframes slideInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInSidebar { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
@@ -253,6 +263,22 @@
                 <div id="gpa-output" style="margin-top: 2rem; font-size: 2rem; font-weight: 700; color: #764ba2;"></div>
             </div>
 
+            <div id="timer-view" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>⏱️ Pomodoro Timer</h2>
+                    <button class="action-btn" onclick="goHome()" style="background: #666; color: white;">← Back to Home</button>
+                </div>
+                
+                <div id="timer-display">25:00</div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button id="start-btn" class="action-btn" onclick="toggleTimer()" style="background: #667eea; color: white; padding: 15px 40px; font-size: 1.2rem;">Start Session</button>
+                    <button class="action-btn" onclick="resetTimer()" style="background: #764ba2; color: white; padding: 15px 40px; font-size: 1.2rem;">Reset</button>
+                </div>
+                
+                <p style="text-align: center; margin-top: 2rem; color: #666;">Focus for 25 minutes, then take a short break!</p>
+            </div>
+
         </div>
 
         <aside class="sidebar">
@@ -275,11 +301,19 @@
         function goHome() {
             document.getElementById('home-view').style.display = 'block';
             document.getElementById('gpa-view').style.display = 'none';
+            document.getElementById('timer-view').style.display = 'none';
         }
 
         function openGPACalculator() {
             document.getElementById('home-view').style.display = 'none';
             document.getElementById('gpa-view').style.display = 'block';
+            document.getElementById('timer-view').style.display = 'none';
+        }
+
+        function openStudyTimer() {
+            document.getElementById('home-view').style.display = 'none';
+            document.getElementById('gpa-view').style.display = 'none';
+            document.getElementById('timer-view').style.display = 'block';
         }
 
         // GPA Logic
@@ -321,8 +355,48 @@
             }
         }
 
-        function openStudyTimer() {
-            alert('Study Timer feature - Coming soon!');
+        // --- POMODORO TIMER LOGIC ---
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let timerId = null;
+        let isRunning = false;
+
+        const display = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerId);
+                startBtn.textContent = 'Resume';
+                startBtn.style.background = '#667eea';
+            } else {
+                startBtn.textContent = 'Pause';
+                startBtn.style.background = '#e74c3c'; // Red for pause
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerId);
+                        alert("Time's up! Take a break.");
+                        resetTimer();
+                    }
+                }, 1000);
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timerId);
+            timeLeft = 25 * 60;
+            isRunning = false;
+            startBtn.textContent = 'Start Session';
+            startBtn.style.background = '#667eea';
+            updateDisplay();
         }
     </script>
 </body>

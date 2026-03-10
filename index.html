@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Toolkit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar h1 {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex: 1;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideInContent 0.5s ease;
+        }
+
+        .main-content h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .tool-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideInSidebar 0.5s ease;
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .event {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .event:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            transform: translateX(5px);
+        }
+
+        .event h4 {
+            color: #764ba2;
+            margin-bottom: 0.3rem;
+            font-size: 0.95rem;
+        }
+
+        .event p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .event-date {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Animations */
+        @keyframes slideInContent {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInSidebar {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+
+            .main-content {
+                order: 1;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav-links a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .sidebar {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <h1>Student Toolkit</h1>
+        <ul class="nav-links">
+            <li><a onclick="openGPACalculator()">GPA Calculator</a></li>
+            <li><a onclick="openStudyTimer()">Study Timer</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Container with Content and Sidebar -->
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Welcome to Student Toolkit</h2>
+            <p>Your comprehensive platform for academic success. Manage your grades, track your study time, and stay organized with our suite of student tools.</p>
+            
+            <div class="tools-grid">
+                <div class="tool-card" onclick="openGPACalculator()">
+                    <h3>📊 GPA Calculator</h3>
+                    <p>Calculate and track your GPA across multiple courses and semesters.</p>
+                </div>
+                <div class="tool-card" onclick="openStudyTimer()">
+                    <h3>⏱️ Study Timer</h3>
+                    <p>Maximize productivity with Pomodoro-style study sessions and breaks.</p>
+                </div>
+                <div class="tool-card" onclick="alert('More features coming soon!')">
+                    <h3>📚 Study Resources</h3>
+                    <p>Access curated study materials and learning resources.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>📅 Upcoming Events</h3>
+            
+            <div class="event">
+                <h4>Midterm Exams</h4>
+                <p>Mathematics, Physics, and Chemistry exams.</p>
+                <div class="event-date">Oct 15 - Oct 20, 2024</div>
+            </div>
+
+            <div class="event">
+                <h4>Project Submission</h4>
+                <p>Final project deadline for Web Development course.</p>
+                <div class="event-date">Oct 22, 2024</div>
+            </div>
+
+            <div class="event">
+                <h4>Study Group Meeting</h4>
+                <p>Weekly study group discussion on Data Structures.</p>
+                <div class="event-date">Oct 18, 2024 @ 4:00 PM</div>
+            </div>
+
+            <div class="event">
+                <h4>Career Fair</h4>
+                <p>Meet with tech companies and explore internship opportunities.</p>
+                <div class="event-date">Oct 25, 2024</div>
+            </div>
+
+            <div class="event">
+                <h4>Library Workshop</h4>
+                <p>Research methodologies and academic writing techniques.</p>
+                <div class="event-date">Oct 19, 2024 @ 2:00 PM</div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function openGPACalculator() {
+            alert('GPA Calculator feature - Coming soon!');
+            console.log('Opening GPA Calculator...');
+        }
+
+        function openStudyTimer() {
+            alert('Study Timer feature - Coming soon!');
+            console.log('Opening Study Timer...');
+        }
+    </script>
+</body>
+</html>

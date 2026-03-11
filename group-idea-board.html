@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Team Idea Board</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet">
   <style>
     body {
@@ -211,16 +210,29 @@
   </footer>
 
   <script>
+    // Global array to track existing ideas
+    const existingIdeas = [];
+
     function addIdea() {
       const name = document.getElementById('name').value;
-      const idea = document.getElementById('idea').value.trim();
+      const ideaTextArea = document.getElementById('idea');
+      const ideaValue = ideaTextArea.value.trim();
 
-      if (idea) {
+      if (ideaValue) {
+        // Duplicate Check: Normalize to lowercase to prevent minor variations
+        if (existingIdeas.includes(ideaValue.toLowerCase())) {
+          alert("This idea has already been submitted!");
+          return;
+        }
+
+        // Add to tracking array
+        existingIdeas.push(ideaValue.toLowerCase());
+
         document.getElementById('ideasSection').style.display = 'block';
 
         const ideaCard = document.createElement('div');
         ideaCard.className = 'idea-card pending-card';
-        ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${idea}</p>`;
+        ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${ideaValue}</p>`;
 
         const btnContainer = document.createElement('div');
         btnContainer.className = 'card-buttons';
@@ -236,6 +248,9 @@
         deleteBtn.className = 'delete-btn';
         deleteBtn.textContent = 'Delete';
         deleteBtn.onclick = function() {
+          // Remove from tracking array when deleted
+          const index = existingIdeas.indexOf(ideaValue.toLowerCase());
+          if (index > -1) existingIdeas.splice(index, 1);
           ideaCard.remove();
         };
 
@@ -244,44 +259,45 @@
         ideaCard.appendChild(btnContainer);
 
         document.getElementById('pendingList').appendChild(ideaCard);
-        document.getElementById('idea').value = '';
+        ideaTextArea.value = '';
       }
     }
 
-   function moveToApproved(card) {
-  // Remove old buttons (Approve/Delete)
-  card.querySelector('.card-buttons').remove();
-  card.classList.remove('pending-card');
-  card.style.borderLeft = '6px solid #74ebd5';
+    function moveToApproved(card) {
+      // Find the idea text before we remove the buttons or change structure
+      const ideaText = card.querySelector('p').textContent.toLowerCase();
+      
+      card.querySelector('.card-buttons').remove();
+      card.classList.remove('pending-card');
+      card.style.borderLeft = '6px solid #74ebd5';
 
-  // Create new button container
-  const btnContainer = document.createElement('div');
-  btnContainer.className = 'card-buttons';
+      const btnContainer = document.createElement('div');
+      btnContainer.className = 'card-buttons';
 
-  // Done button
-  const doneBtn = document.createElement('button');
-  doneBtn.className = 'done-btn';
-  doneBtn.textContent = 'Done';
-  doneBtn.onclick = function() {
-    card.classList.add('done-card'); // shade and mark as completed
-    doneBtn.remove(); // remove the button after marking done
-  };
+      const doneBtn = document.createElement('button');
+      doneBtn.className = 'done-btn';
+      doneBtn.textContent = 'Done';
+      doneBtn.onclick = function() {
+        card.classList.add('done-card'); 
+        doneBtn.remove();
+      };
 
-  // Delete button (still available in Approved section)
-  const deleteBtn = document.createElement('button');
-  deleteBtn.className = 'delete-btn';
-  deleteBtn.textContent = 'Delete';
-  deleteBtn.onclick = function() {
-    card.remove();
-  };
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = function() {
+        // Remove from tracking array when deleted
+        const index = existingIdeas.indexOf(ideaText);
+        if (index > -1) existingIdeas.splice(index, 1);
+        card.remove();
+      };
 
-  btnContainer.appendChild(doneBtn);
-  btnContainer.appendChild(deleteBtn);
-  card.appendChild(btnContainer);
+      btnContainer.appendChild(doneBtn);
+      btnContainer.appendChild(deleteBtn);
+      card.appendChild(btnContainer);
 
-  // Move card to Approved Ideas section
-  document.getElementById('ideasList').appendChild(card);
- }
-</script>
+      document.getElementById('ideasList').appendChild(card);
+    }
+  </script>
 </body>
 </html>

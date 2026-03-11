@@ -77,7 +77,7 @@
     .ideas-section {
       max-width: 700px;
       margin: 40px auto;
-      display: none; /* hidden until first idea */
+      display: none; 
     }
 
     .idea-card {
@@ -97,13 +97,11 @@
       font-size: 1.2rem;
     }
 
-    /* Pending ideas style */
     .pending-card {
       background: #fffdf5;
       border-left: 6px solid #fbc02d;
     }
 
-    /* Done (shaded) style */
     .done-card {
       background: #e0e0e0 !important;
       color: #777 !important;
@@ -128,29 +126,9 @@
       transition: background 0.3s ease;
     }
 
-    .approve-btn {
-      background: #4caf50;
-      color: #fff;
-    }
-    .approve-btn:hover {
-      background: #388e3c;
-    }
-
-    .delete-btn {
-      background: #e53935;
-      color: #fff;
-    }
-    .delete-btn:hover {
-      background: #b71c1c;
-    }
-
-    .done-btn {
-      background: #2196f3;
-      color: #fff;
-    }
-    .done-btn:hover {
-      background: #1565c0;
-    }
+    .approve-btn { background: #4caf50; color: #fff; }
+    .delete-btn { background: #e53935; color: #fff; }
+    .done-btn { background: #2196f3; color: #fff; }
 
     footer {
       text-align: center;
@@ -210,7 +188,6 @@
   </footer>
 
   <script>
-    // Global array to track unique ideas
     const existingIdeas = [];
 
     function addIdea() {
@@ -219,9 +196,9 @@
       const ideaValue = ideaTextArea.value.trim();
 
       if (ideaValue) {
-        // Character Limit Check (redundant due to maxlength, but safe)
+        // Character Limit Check
         if (ideaValue.length > 100) {
-            alert("Idea is too long! Please keep it under 100 characters.");
+            alert("Idea is too long!");
             return;
         }
 
@@ -231,14 +208,24 @@
           return;
         }
 
-        // Add to tracking array
         existingIdeas.push(ideaValue.toLowerCase());
-
         document.getElementById('ideasSection').style.display = 'block';
 
         const ideaCard = document.createElement('div');
         ideaCard.className = 'idea-card pending-card';
-        ideaCard.innerHTML = `<strong>${name}</strong> suggested: <p>${ideaValue}</p>`;
+
+        // Securely add name
+        const nameElement = document.createElement('strong');
+        nameElement.textContent = name;
+        
+        // Securely add idea text (this prevents HTML execution)
+        const ideaParagraph = document.createElement('p');
+        ideaParagraph.textContent = ideaValue;
+
+        // Assemble the card
+        ideaCard.appendChild(nameElement);
+        ideaCard.append(" suggested: ");
+        ideaCard.appendChild(ideaParagraph);
 
         const btnContainer = document.createElement('div');
         btnContainer.className = 'card-buttons';
@@ -300,9 +287,7 @@
 
     function removeIdeaFromArray(text) {
         const index = existingIdeas.indexOf(text);
-        if (index > -1) {
-            existingIdeas.splice(index, 1);
-        }
+        if (index > -1) existingIdeas.splice(index, 1);
     }
   </script>
 </body>
